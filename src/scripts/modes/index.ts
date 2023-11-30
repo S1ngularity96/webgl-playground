@@ -1,6 +1,6 @@
 import vertexShaderSource from "./shader/shader.vert?raw";
 import fragmentShaderSource from "./shader/shader.frag?raw";
-import { range, transform } from "lodash";
+import { range } from "lodash";
 function createShader(gl: WebGLRenderingContext, type: number, source: string): WebGLShader | null {
   var shader = gl.createShader(type);
   if (shader) {
@@ -89,9 +89,9 @@ function createGrid(gl: WebGLRenderingContext, program: WebGLProgram, grid_width
   const grid_x_buffer = createBufferObject(gl, new Float32Array(x_axis));
   const grid_y_buffer = createBufferObject(gl, new Float32Array(y_axis));
   if (grid_x_buffer !== null && grid_y_buffer !== null) {
+    gl.uniform4fv(uniform_color, new Float32Array([0.25, 0.25, 0.25, 0]));
     let location = gl.getAttribLocation(program, "a_position");
     gl.enableVertexAttribArray(location);
-    gl.uniform4fv(uniform_color, new Float32Array([0.25, 0.25, 0.25, 1]));
     gl.vertexAttribPointer(location, 2, gl.FLOAT, false, 0, 0);
     gl.bindBuffer(gl.ARRAY_BUFFER, grid_x_buffer);
     gl.drawArrays(gl.LINES, 0, x_axis.length / 2);
@@ -110,9 +110,15 @@ function drawCircle(gl: WebGLRenderingContext, program: WebGLProgram, radius: nu
   let ranges = range(0, 4 * Math.PI, stepSize);
   ranges.forEach((step, index) => {
     const nextStep = ranges.length - 1 > index ? step : ranges[index + 1];
-    triangles.push(0, 0, Math.sin(step) * radius, Math.cos(step) * radius, Math.sin(nextStep) * radius, Math.cos(nextStep) * radius);
+    triangles.push(
+      0,
+      0,
+      Math.sin(step) * radius,
+      Math.cos(step) * radius,
+      Math.sin(nextStep) * radius,
+      Math.cos(nextStep) * radius
+    );
   });
-  console.log(`Circle with ${triangles.length / 6} triangles`);
   const circleBuffer = createBufferObject(gl, new Float32Array(triangles));
   if (circleBuffer != null) {
     let location = gl.getAttribLocation(program, "a_position");
@@ -130,7 +136,6 @@ function drawCircle(gl: WebGLRenderingContext, program: WebGLProgram, radius: nu
 
 function drawInLinesStripMode(gl: WebGLRenderingContext, program: WebGLProgram) {
   let positions = [];
-  let uniform_color = gl.getUniformLocation(program, "u_color");
   for (let x = -1; x <= 1; x += 0.01) {
     let y = Math.cos(x * 10 - 2);
     positions.push(x);
@@ -142,7 +147,6 @@ function drawInLinesStripMode(gl: WebGLRenderingContext, program: WebGLProgram) 
   const sine_wave_buffer = createBufferObject(gl, new Float32Array(positions));
   if (sine_wave_buffer !== null) {
     let location = gl.getAttribLocation(program, "a_position");
-    gl.uniform4fv(uniform_color, new Float32Array([1, 0, 0, 1]));
     gl.vertexAttribPointer(location, 2, gl.FLOAT, false, 0, 0);
     gl.bindBuffer(gl.ARRAY_BUFFER, sine_wave_buffer);
     gl.drawArrays(gl.LINE_STRIP, 0, positions.length / 2);
