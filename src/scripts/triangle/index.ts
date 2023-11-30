@@ -1,99 +1,101 @@
-import vertexShaderSource from './shader/vertex-shader-2d.vert?raw'
-import fragmentShaderSource from './shader/fragment-shader.frag?raw';
+import vertexShaderSource from "./shader/vertex-shader-2d.vert?raw";
+import fragmentShaderSource from "./shader/fragment-shader.frag?raw";
 
-function createShader(gl, type, source) {
-    var shader = gl.createShader(type);
+function createShader(gl: WebGLRenderingContext, type: number, source: string): WebGLShader | null {
+  var shader = gl.createShader(type);
+  if (shader) {
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
     var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
     if (success) {
-        return shader;
+      return shader;
     }
-
     console.log(gl.getShaderInfoLog(shader));
     gl.deleteShader(shader);
+  }
+  return null;
 }
 
-function createProgram(gl, vertexShader, fragmentShader) {
-    var program = gl.createProgram();
+function createProgram(
+  gl: WebGLRenderingContext,
+  vertexShader: WebGLShader,
+  fragmentShader: WebGLShader
+): WebGLProgram | null {
+  var program: WebGLProgram | null = gl.createProgram();
+  if (program) {
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
-    var success = gl.getProgramParameter(program, gl.LINK_STATUS);
+    const success = gl.getProgramParameter(program, gl.LINK_STATUS);
     if (success) {
-        return program;
+      return program;
     }
-
     console.log(gl.getProgramInfoLog(program));
     gl.deleteProgram(program);
+  }
+  return null;
 }
 
-
 function onRun(gl: WebGLRenderingContext) {
-    console.log("Started something")
+  console.log("Started something");
 
-    // create GLSL shaders, upload the GLSL source, compile the shaders
-    var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-    var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-
+  // create GLSL shaders, upload the GLSL source, compile the shaders
+  var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+  var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+  if (vertexShader && fragmentShader) {
     // Link the two shaders into a program
     var program = createProgram(gl, vertexShader, fragmentShader);
+    if (program) {
+      // look up where the vertex data needs to go.
+      var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
 
-    // look up where the vertex data needs to go.
-    var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+      // Create a buffer and put three 2d clip space points in it
+      var positionBuffer = gl.createBuffer();
 
-    // Create a buffer and put three 2d clip space points in it
-    var positionBuffer = gl.createBuffer();
+      // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-    // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+      var positions = [-1, -1, 0, 1, 1, -1];
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
-    var positions = [
-        0, 0,
-        0, 0.5,
-        0.7, 0,
-    ];
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+      // code above this line is initialization code.
+      // code below this line is rendering code.
 
-    // code above this line is initialization code.
-    // code below this line is rendering code.
+      //webglUtils.resizeCanvasToDisplaySize(gl.canvas);
 
-    //webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+      // Tell WebGL how to convert from clip space to pixels
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    // Tell WebGL how to convert from clip space to pixels
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+      // Clear the canvas
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
 
-    // Clear the canvas
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+      // Tell it to use our program (pair of shaders)
+      gl.useProgram(program);
 
-    // Tell it to use our program (pair of shaders)
-    gl.useProgram(program);
+      // Turn on the attribute
+      gl.enableVertexAttribArray(positionAttributeLocation);
 
-    // Turn on the attribute
-    gl.enableVertexAttribArray(positionAttributeLocation);
+      // Bind the position buffer.
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-    // Bind the position buffer.
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+      // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
+      var size = 2; // 2 components per iteration
+      var type = gl.FLOAT; // the data is 32bit floats
+      var normalize = false; // don't normalize the data
+      var stride = 0; // 0 = move forward size * sizeof(type) each iteration to get the next position
+      var offset = 0; // start at the beginning of the buffer
+      gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
 
-    // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
-    var size = 2;          // 2 components per iteration
-    var type = gl.FLOAT;   // the data is 32bit floats
-    var normalize = false; // don't normalize the data
-    var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-    var offset = 0;        // start at the beginning of the buffer
-    gl.vertexAttribPointer(
-        positionAttributeLocation, size, type, normalize, stride, offset);
-
-    // draw
-    var primitiveType = gl.TRIANGLES;
-    var offset = 0;
-    var count = 3;
-    gl.drawArrays(primitiveType, offset, count);
+      // draw
+      var primitiveType = gl.TRIANGLES;
+      var offset = 0;
+      var count = 3;
+      gl.drawArrays(primitiveType, offset, count);
+    }
+  }
 }
 
 export default {
-    onRun
-}
-
-
+  onRun,
+};

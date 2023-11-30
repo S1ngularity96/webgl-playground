@@ -7,6 +7,7 @@ Followed tutorial: https://webglfundamentals.org/webgl/lessons/webgl-fundamental
 
 <GL script="triangle"/>
 
+
 ::: code-group
 
 <<< @/src/scripts/triangle/index.ts{ts}[Main]

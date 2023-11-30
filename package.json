@@ -5,9 +5,11 @@
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.202",
     "vitepress": "^1.0.0-rc.25"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "vue": "^3.3.7"
   }
 }

@@ -5,13 +5,14 @@ import GLScript from '../src/GLScript';
 
 type GLProps = {
     script?: string
+    args?: any[]
 }
 
 
 async function postExecGL(props: GLProps, gl: WebGLRenderingContext) {
     if (props.script) {
         const module: GLScript = await import(`../src/scripts/${props.script}/index.ts`)
-        module.default.onRun(gl);
+        module.default.onRun(gl, props.args);
     }
 }
 
