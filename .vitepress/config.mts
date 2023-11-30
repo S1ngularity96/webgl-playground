@@ -15,7 +15,8 @@ export default defineConfig({
         text: 'Fundamentals',
         items: [
           { text: 'Loading WebGL Context', link: '/sections/fundamentals/webgl-context.md' },
-          { text: 'WebGL drawing modes', link: '/sections/fundamentals/webgl-modes.md'}
+          { text: 'WebGL drawing modes', link: '/sections/fundamentals/webgl-modes.md'},
+          {text: 'Interleaved Buffer', link: '/sections/fundamentals/webgl-interleaved-buffer.md'}
         ]
       }
     ],
