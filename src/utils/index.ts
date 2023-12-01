@@ -102,7 +102,7 @@ function drawCircle(gl: WebGLRenderingContext, program: WebGLProgram, radius: nu
 
     gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 0, 0);
     gl.uniform4fv(uniform_color, [0, 0, 0, 0]);
-    gl.drawArrays(gl.POINTS, 0, triangles.length / 6);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangles.length / 6);
   }
 }
 

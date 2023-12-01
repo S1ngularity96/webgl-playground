@@ -1,4 +1,4 @@
-import "../../../global.d.ts";
+import "../../../types/global.d.ts";
 import vertexShaderSource from "./shader/shader.vert?raw";
 import fragmentShaderSource from "./shader/shader.frag?raw";
 import { createBufferObject, createGrid, createProgram, createShader, drawCircle } from "../../utils";
