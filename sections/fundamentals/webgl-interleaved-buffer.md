@@ -19,7 +19,13 @@ The parameters have the following meaning:
 
 Lets create three triangles with different colors from one buffer.
 
-`[r1,g1,b1, x1,y1, x2,y2, x3, y3, r2,g2,b2, ...]`
+```
+[
+    r1, g1, b1, a1, x1,y1, r1, g1, b1, a1, x2,y2, r1, g1, b1, a1, x3,y3
+    r2, g2, b2, a2, x1,y1, r2, g2, b2, a2, x2,y2, r2, g2, b2, a2, x3,y3 
+]
+
+```
 
 With following attributes: 
 

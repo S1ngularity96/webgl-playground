@@ -1,7 +1,15 @@
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 import GLScript from '../src/GLScript';
+
+interface State {
+    logs: string[]
+}
+
+const state: State = reactive<State>({
+    logs: []
+});
 
 type GLProps = {
     script?: string
@@ -9,10 +17,14 @@ type GLProps = {
 }
 
 
+function out(msg: string) {
+    state.logs.push(msg);
+}
+
 async function postExecGL(props: GLProps, gl: WebGLRenderingContext) {
     if (props.script) {
         const module: GLScript = await import(`../src/scripts/${props.script}/index.ts`)
-        module.default.onRun(gl, props.args);
+        module.default.onRun(gl, out, props.args);
     }
 }
 
@@ -35,6 +47,12 @@ onMounted(async () => {
 <template>
     <p v-if="props.script == undefined">No script available</p>
     <canvas ref="canvas" width="680" height="480" id="canvas"></canvas>
+    <details style=" padding: 0; margin: 0 0;" >
+        <summary>Output Log</summary>
+        <div style="border: 1px solid; border-radius: 4px; padding: 4px; height:50px; overflow: hidden; overflow-y: scroll">
+            <span style="font-size: 10px;" v-for="(log, index) in state.logs" :key="index">{{ log }} <br></span>
+        </div>
+    </details>
 </template>
 
 <style>

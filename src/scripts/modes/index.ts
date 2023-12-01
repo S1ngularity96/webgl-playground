@@ -48,9 +48,9 @@ function drawInLinesStripMode(gl: WebGLRenderingContext, program: WebGLProgram) 
   }
 }
 
-function onRun(gl: WebGLRenderingContext, args: any[]) {
+function onRun(gl: WebGLRenderingContext, out: (msg: string) => void, args: any[]) {
   const mode = args[0];
-  console.log(`Try to draw in mode: ${mode}`);
+  out(`Try to draw in mode: ${mode}`);
   // create GLSL shaders, upload the GLSL source, compile the shaders
   var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
   var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
