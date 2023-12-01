@@ -1,3 +1,4 @@
+import "../../../types/global.d.ts"
 import vertexShaderSource from "./shader/vertex-shader-2d.vert?raw";
 import fragmentShaderSource from "./shader/fragment-shader.frag?raw";
 

@@ -1,3 +1,4 @@
+import "../../../types/global.d.ts"
 import vertexShaderSource from "./shader/shader.vert?raw";
 import fragmentShaderSource from "./shader/shader.frag?raw";
 import { range } from "lodash";
