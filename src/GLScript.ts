@@ -1,3 +1,3 @@
 export default interface GLScript {
-  default: { onRun: (gl: WebGLRenderingContext, args?: any[]) => void };
+  default: { onRun: (gl: WebGLRenderingContext, out: (msg: string) => void, args?: any[]) => void };
 }
