@@ -11,7 +11,7 @@ function drawInPointsMode(gl: WebGLRenderingContext, program: WebGLProgram) {
   let positions = [];
 
   for (let x = -1; x <= 1; x += 0.001) {
-    let y = Math.sin(x * 10 - 2);
+    let y = Math.sin(x * 10);
     positions.push(x);
     positions.push(y);
   }

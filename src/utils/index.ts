@@ -1,5 +1,21 @@
 import { range } from "lodash";
 
+function setAttributeLocations(gl: WebGLRenderingContext, prog: WebGLProgram, target: { [key: string]: Number }): void {
+  Object.keys(target).forEach((value) => {
+    target[value] = gl.getAttribLocation(prog, value);
+  });
+}
+
+function setUniformLocations(
+  gl: WebGLRenderingContext,
+  prog: WebGLProgram,
+  target: { [key: string]: WebGLUniformLocation | null }
+): void {
+  Object.keys(target).forEach((value) => {
+    target[value] = gl.getUniformLocation(prog, value);
+  });
+}
+
 function createShader(gl: WebGLRenderingContext, type: number, source: string): WebGLShader | null {
   var shader = gl.createShader(type);
   if (shader) {
@@ -106,4 +122,12 @@ function drawCircle(gl: WebGLRenderingContext, program: WebGLProgram, radius: nu
   }
 }
 
-export { createBufferObject, createGrid, createProgram, createShader, drawCircle };
+export {
+  createBufferObject,
+  createGrid,
+  createProgram,
+  createShader,
+  drawCircle,
+  setAttributeLocations,
+  setUniformLocations,
+};

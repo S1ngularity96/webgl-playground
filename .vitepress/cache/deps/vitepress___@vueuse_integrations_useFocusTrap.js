@@ -4,7 +4,8 @@ import {
   ref,
   unref,
   watch
-} from "./chunk-SDVEPHC6.js";
+} from "./chunk-DTWPM7ZD.js";
+import "./chunk-ZS7NZCD4.js";
 
 // node_modules/@vueuse/shared/index.mjs
 function tryOnScopeDispose(fn) {
@@ -18,6 +19,7 @@ function toValue(r) {
   return typeof r === "function" ? r() : unref(r);
 }
 var isClient = typeof window !== "undefined" && typeof document !== "undefined";
+var isWorker = typeof WorkerGlobalScope !== "undefined" && globalThis instanceof WorkerGlobalScope;
 var isIOS = getIsIOS();
 function getIsIOS() {
   var _a;

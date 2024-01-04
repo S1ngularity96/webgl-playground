@@ -6,10 +6,12 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.202",
+    "vite": "^5.0.7",
     "vitepress": "^1.0.0-rc.25"
   },
   "dependencies": {
     "lodash": "^4.17.21",
+    "mathjs": "^12.2.1",
     "vue": "^3.3.7"
   }
 }

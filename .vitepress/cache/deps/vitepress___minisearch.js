@@ -1,3 +1,5 @@
+import "./chunk-ZS7NZCD4.js";
+
 // node_modules/minisearch/dist/es/index.js
 var __assign = function() {
   __assign = Object.assign || function __assign2(t) {
@@ -1107,6 +1109,7 @@ var MiniSearch = (
             id: this._documentIds.get(docId),
             score: score * quality,
             terms: Object.keys(match),
+            queryTerms: terms,
             match
           };
           Object.assign(result, this._storedFields.get(docId));

@@ -1,31 +1,30 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from "vitepress";
+
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "WebGL Playground",
   description: "Notes about experience with WebGL",
+  
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' }
-    ],
+    nav: [{ text: "Home", link: "/" }],
 
     sidebar: [
       {
-        text: 'Fundamentals',
+        text: "Fundamentals",
         items: [
-          { text: 'Loading WebGL Context', link: '/sections/fundamentals/webgl-context.md' },
-          { text: 'WebGL drawing modes', link: '/sections/fundamentals/webgl-modes.md'},
-          {text: 'Interleaved Buffer', link: '/sections/fundamentals/webgl-interleaved-buffer.md'}
-        ]
-      }
+          { text: "Loading WebGL Context", link: "/sections/fundamentals/webgl-context.md" },
+          { text: "WebGL drawing modes", link: "/sections/fundamentals/webgl-modes.md" },
+          { text: "Interleaved Buffer", link: "/sections/fundamentals/webgl-interleaved-buffer.md" },
+          { text: "Transformations", link: "/sections/fundamentals/webgl-transformations.md" },
+        ],
+      },
     ],
 
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ],
+    socialLinks: [{ icon: "github", link: "https://github.com/vuejs/vitepress" }],
     search: {
-      provider: 'local'
-    }
+      provider: "local",
+    },
   },
-})
+});
